@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+
+
+
+{% block style %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+    {% block content %}
+
+    <div class="col" >
+
+      <div class="row d-flex justify-content-start">
+          <h5 class="pr-5 pl-3 ">search option:</h5>
+          <div class="row w-75 d-flex justify-content-around ">
+          <div class="pr-5">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+          <label class="form-check-label" for="inlineRadio1">clint name</label>
+          </div>
+          <div class="pr-5 ">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+          <label class="form-check-label" for="inlineRadio2">Recently changed</label>
+          </div>
+          <div class="pr-5">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+          <label class="form-check-label" for="inlineRadio3">openCase</label>
+          </div>
+          <div class="pr-5">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
+          <label class="form-check-label" for="inlineRadio3">closeCase</label>
+          </div>
+          </div>
+
+      </div>
+
+
+
+        <div class ="overflow-auto" style="height: 800px; background-color: rgba(255,150,0,0.1);">
+            <div class="d-flex justify-content-around flex-wrap">
+                {% for item_name, item_icon in dirInfo %}
+                 <div class="p-5" style="height=200px; width=200px;">
+                     <div class="dropdown d-flex justify-content-end">
+                         <button class="btn  background-color: rgba(255,150,0,0.1) dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                             <a class="dropdown-item" href="#">info</a>
+                             <a class="dropdown-item" href="#">edit</a>
+                             <a class="dropdown-item" href="#">delete</a>
+                        </div>
+                    </div>
+                     <form class="d-flex justify-content-center" action="#" method="post"> <button class="btn" name="userChose" value="{{item_name}}"><i class="{{item_icon}}  btn-xl"></i></button></form>
+                     <p class="d-flex justify-content-center text-truncate">{{ item_name }} </p>
+                 </div>
+                {% endfor %}
+             </div>
+
+        </div>
+    </div>
+      {% endblock %}
+
+
+
+
+
+{% block Footer %}
+ <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+		<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalfile">
+  add new file
+</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelAddsomtingToDir">
+  add exe?
+</button>
+{% endblock %}
+
+{% block alertMsg%}
+<!-- Modal -->
+<div class="modal fade" id="Modalfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+   <form class="d-flex justify -content-center" action="\createFile" method="post">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">case</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="cname">case name:</label><br>
+        <input type="text" id="cname" name="cname"><br><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+   </form>
+
+  </div>
+</div>
+
+<div class="modal fade" id="modelAddsomtingToDir" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+   <form method="POST" action="\uploadFile" enctype="multipart/form-data">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle1">case</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <p><input type="file" name="file"></p>
+      <p><input type="submit" value="Submit"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+   </form>
+
+
+
+  </div>
+</div>
+
+ </nav>
+{% endblock %}

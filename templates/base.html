@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+	<title>{% block title %}{% endblock %}</title>
+	<style>
+	.btn-xl { padding: 10px 20px;  font-size: 40px; border-radius: 10px;}
+	{% block style %}
+	{% endblock %}
+	</style>
+
+
+	</head>
+	<body>
+
+
+
+
+	   <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+
+
+		 <div name="left" class="d-flex justify-content-start">
+		  <a class="navbar-brand" href="#">Navbar</a>
+			<ul class="navbar-nav mr-auto">
+                    <li class="nav-item  ">
+
+                    <form action="/backword" method="post" >
+                    <button name="forwardBtn" type="submit" class="border-0 bg-light"><div class="bi bi-arrow-left-square-fill btn-lg"></div></button>
+                    </form>
+                   </li>
+                   <li class="nav-item">
+                     <button name="forwardBtn" type="submit" class="border-0 bg-light"><div class="bi bi-arrow-right-square-fill btn-lg"></div></button>
+                   </li>
+			</ul>
+          </div>
+
+		   <div name="center">
+			  <form class="form-inline">
+				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+               </form>
+		   </div>
+
+
+		   <div name="right">
+		    <ul class="navbar-nav">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+		      </li>
+
+		      <li class="nav-item">
+		        <a class="nav-link" href="/login">Login</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="/logout">Logout</a>
+		      </li>
+				<li class="nav-item">
+		        <a class="nav-link" href="/user">option</a>
+		      </li>
+		    </ul>
+           </div>
+	   </nav>
+
+
+	   <div class="container-fluid">
+			<div class="" id="main info">
+               <div class="row">
+                   <div class="col-1">
+                      money
+                   </div>
+
+	       {% block content%}
+		   {% endblock %}
+
+			    <div class="col-1">
+                  <h2 class ="d-flex justify-content-end border border-dark">20:20</h2>
+                </div>
+	          </div>
+          </div>
+	   </div>
+
+
+	   <div class="fixed-bottom" name="footer">
+        {% block Footer%}
+		{% endblock %}
+	   </div>
+        {% block alertMsg%}
+	   {% endblock %}
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
+</html>

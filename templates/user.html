@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}user{% endblock %}
+{% block content %}
+<div class="col">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         {%for msg in messages%}
+         <center>  <p>{{msg}}</p></center>
+         {%endfor%}
+      {% endif %}
+    {% endwith %}
+
+
+ <div class="col " >
+
+
+     <center>
+     <div class ="overflow-auto" style="height: 800px; background-color: rgba(255,150,0,0.1);">
+        <form action="#" method="POST">
+
+    <h3>email</h3>
+    <input type="email" name="email" placeholder="enter email" value="{{email if email}}"/>
+
+    <h3>workSpcaeDir</h3>
+    <input type="workDirctory" name="workSpace" placeholder="enter path" value="{{workSpace if workSpace}}"/>
+
+    <h3>password</h3>
+    <input type="text" name="password" placeholder="password" value="{{password if password}}"/>
+
+    <h3>userName</h3>
+    <input type="user" name="user" placeholder="userName" value="{{user if user}}"/>
+
+
+    <p> <input type="submit" value="submit" class="m-3"/></p>
+    </form>
+    </div>
+    </center>
+ </div>
+
+
+</div>
+{% endblock %}
+
+{% block Footer %}
+ <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+		  <a class="navbar-brand" href="#">footer for user</a>
+ </nav>
+{% endblock %}
