@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for,session ,flash
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import fileManager
 from werkzeug.utils import secure_filename
@@ -9,14 +9,13 @@ user_home_path = os.path.expanduser("~/")
 basePath = os.path.join(user_home_path, "OneDrive", "Desktop", "sharon project", "demoMainFiles")
 path = os.path.join(user_home_path, "OneDrive", "Desktop", "sharon project", "demoMainFiles")
 
-
-#************************************
-app= Flask(__name__)  # start the flask file
+# ************************************
+app = Flask(__name__)  # start the flask file
 app.secret_key = "hello"
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///users.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
-#************************************
-#************************************
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# ************************************
+# ************************************
 
 # Init the db from an external file
 db.app = app
@@ -25,31 +24,33 @@ db.init_app(app)
 
 @app.route('/', methods=["POST", "GET"])
 def home():
-  #  path=basePath
+    #  path=basePath
     if "user" in session:
-     global path
-     global basePath
-     basePath = fileManager.pythonPath(session["workSpace"])
-     path = basePath
-     if request.method == "GET":
-      dirToDisplay=fileManager.infoFromDirPath(path)
-      if(dirToDisplay==None):
-          flash("please select valid path")
-          return redirect(url_for("user"))
-      piclist=fileManager.fileNameAndTypePic(dirToDisplay)
-      return render_template('index.html',dirInfo=piclist)
-     else:   #post
-      userChose = request.form["userChose"]
+        global path
+        global basePath
+        basePath = fileManager.pythonPath(session["workSpace"])
+        path = basePath
+        if request.method == "GET":
+            dirToDisplay = fileManager.infoFromDirPath(path)
+            if (dirToDisplay == None):
+                flash("please select valid path")
+                return redirect(url_for("user"))
+            piclist = fileManager.fileNameAndTypePic(dirToDisplay)
+            listofCustomer = fileManager.listOfCustomer(customer)
 
-      nameOnly=userChose.split(".")
-      path=path+"//"+nameOnly[0]
-      return redirect(url_for("case"))
+            return render_template('index.html', dirInfo=piclist, listofCustomer=listofCustomer)
+        else:  # post
+            userChose = request.form["userChose"]
+
+            nameOnly = userChose.split(".")
+            path = path + "//" + nameOnly[0]
+            return redirect(url_for("case"))
     else:
         flash("please log in")
         return redirect(url_for("login"))
 
 
-@app.route('/case',methods=["POST", "GET"])
+@app.route('/case', methods=["POST", "GET"])
 def case():
     global path
     if request.method == "GET":
@@ -70,7 +71,6 @@ def case():
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
-
     if request.method == "GET":
         if "user" in session:
             flash("alrady login")
@@ -96,7 +96,8 @@ def register():
             flash("success to register,login successful!")
             return redirect(url_for("user"))
 
-@app.route("/addCustomer" , methods=['POST'])
+
+@app.route("/addCustomer", methods=['POST'])
 def AddCustomer():
     firstName = request.form["Cfname"]
     lastName = request.form["Clname"]
@@ -108,14 +109,13 @@ def AddCustomer():
         flash("user already exist")
         return redirect(url_for("home"))
     else:
-        cust = customer(firstName,lastName,email,password,tz)
+        cust = customer(firstName, lastName, email, password, tz)
         db.session.add(cust)
         db.session.commit()
         return redirect(url_for("home"))
 
 
-
-@app.route('/login',methods=["POST", "GET"])
+@app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
         session.permanent = True
@@ -134,9 +134,10 @@ def login():
             return render_template("login.html")
     else:
         if "user" in session:
-          # flash("already login")
+            # flash("already login")
             return redirect(url_for("home"))
         return render_template("login.html")
+
 
 @app.route("/user", methods=["POST", "GET"])
 def user():
@@ -169,10 +170,10 @@ def user():
         else:
             email = session["email"]
             workSpace = session["workSpace"]
-            password=session["password"]
-            user=session["user"]
+            password = session["password"]
+            user = session["user"]
 
-        return render_template("user.html", email=email, workSpace=workSpace,user=user,password=password)
+        return render_template("user.html", email=email, workSpace=workSpace, user=user, password=password)
     else:
         flash("you are not log in!")
         return redirect(url_for("login"))
@@ -180,7 +181,7 @@ def user():
 
 @app.route("/logout")
 def logout():
-    if("user" in session):
+    if ("user" in session):
         user = session["user"]
         flash(f"you have been logged out, {user}", "info")
         session.pop("user", None)
@@ -191,25 +192,6 @@ def logout():
         flash("you have already log out")
         return redirect(url_for("login"))
 
-
-@app.route("/deleteFile")
-def delete():
-    return #to do
-
-@app.route("/showInfo")
-def fileInfo():
-    return #to do
-
-@app.route("/editFile")
-def editFile():
-    return #to do
-
-
-
-
-
-
-    return #to do
 
 @app.route("/backword", methods=['GET', 'POST'])
 def backword():
@@ -226,19 +208,28 @@ def backword():
 def uploadFile():
     global path
     file = request.files["file"]
-    fileManager.uploadFile(path,file)
+    fileManager.uploadFile(path, file)
     return redirect(url_for("case"))
 
 
-@app.route('/createFile', methods=['GET', 'POST'])
+@app.route('/createFile', methods=['GET', 'POST'])  # add cases
 def createFile():
+    from models import case #cheak why
     global path
     global basePath
     if basePath == path:
-        CustomerFirstName = request.form["fname"]
-        CustomerLastName = request.form["lname"]
+        # CustomerFirstName = request.form["fname"]
+        # CustomerLastName = request.form["lname"]
+
         caseName = request.form["cname"]
-        fileManager.creatDir(path, caseName)
+        customerTz = request.form["custTz"]
+
+
+        if(fileManager.creatDir(path, caseName)):
+            case=case(customerTz,caseName)
+            db.session.add(case)
+            db.session.commit()
+
         return redirect(url_for("home"))
     else:
         caseName = request.form["cname"]
@@ -249,6 +240,21 @@ def createFile():
 @app.route('/test')
 def test():
     return render_template('new.html')
+
+
+@app.route("/deleteFile")
+def delete():
+    return  # to do
+
+
+@app.route("/showInfo")
+def fileInfo():
+    return  # to do
+
+
+@app.route("/editFile")
+def editFile():
+    return  # to do
 
 
 if __name__ == "__main__":

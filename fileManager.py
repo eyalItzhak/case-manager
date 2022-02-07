@@ -81,3 +81,7 @@ def chekIfDir(name):
         return True
     else:
         return False
+
+def listOfCustomer(customer):
+    return customer.query.all()
+

@@ -21,7 +21,7 @@ class customer(db.Model):
       lName = db.Column("lname", db.String(100))
       email = db.Column("email", db.String(100))
       phone=db.Column("phone", db.String(100))
-      tz=db.Column("tz", db.Integer,unique=True)
+      tz=db.Column("tz", db.String(100),unique=True)
 
       def __init__(self, fName,lName,email, phone, tz):
           self.fName = fName
@@ -33,6 +33,9 @@ class customer(db.Model):
 
 class case(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
-    Tz = db.Column("tz", db.Integer, unique=True)
-    def __init__(self,tz):
-        self.tz = tz
+    Tz = db.Column("Tz", db.String(100), unique=True)
+    caseName = db.Column("caseName", db.String(100), unique=True)
+
+    def __init__(self,Tz,CaseName):
+        self.Tz = Tz
+        self.caseName = CaseName
