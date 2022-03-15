@@ -40,10 +40,7 @@
           </div>
 
 		   <div name="center">
-			  <form class="form-inline">
-				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-               </form>
+
 		   </div>
 
 
@@ -70,15 +67,13 @@
 	   <div class="container-fluid">
 			<div class="" id="main info">
                <div class="row">
-                   <div class="col-1">
-                      money
-                   </div>
+
 
 	       {% block content%}
 		   {% endblock %}
 
-			    <div class="col-1">
-                  <h2 class ="d-flex justify-content-end border border-dark">20:20</h2>
+			    <div class="col-1" style="max-width :200px;padding-right :0px; padding-left :0px;background-color: rgba(242,242,242,0.9);">
+                 <div class="cleanslate w24tz-current-time w24tz-small" style="display: inline-block !important; visibility: hidden !important; min-width:200px !important; min-height:100px !important;"><p><a href="//24timezones.com/Jerusalem/time" style="text-decoration: none" class="clock24" id="tz24-1644261464-c1110-eyJob3VydHlwZSI6IjI0Iiwic2hvd2RhdGUiOiIxIiwic2hvd3NlY29uZHMiOiIwIiwiY29udGFpbmVyX2lkIjoiY2xvY2tfYmxvY2tfY2I2MjAxNzA1OGVmZmQ2IiwidHlwZSI6ImRiIiwibGFuZyI6ImVuIn0=" title="Jerusalem timezone" target="_blank" rel="nofollow">Jerusalem time</a></p><div id="clock_block_cb62017058effd6"></div></div>
                 </div>
 	          </div>
           </div>
@@ -94,7 +89,7 @@
 
 
 
-
+	   <script type="text/javascript" src="//w.24timezones.com/l.js" async></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</body>

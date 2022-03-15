@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="col " >
-     <div class ="overflow-auto" style="height: 800px; background-color: rgba(255,150,0,0.1);">
+ <div class ="overflow-auto" style="height: 100vh; background-color: rgba(204,229,255,0.6);">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
          {%for msg in messages%}
@@ -16,6 +16,7 @@
       {% endif %}
     {% endwith %}
 <center><h1> You are not logged in </h1></center>
+
 <form action="#" method="post" class="col " >
 	<p style="text-align: center">userName:</p>
 	<p style="text-align: center"><input type="text" name="userName" /></p>

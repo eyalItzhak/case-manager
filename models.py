@@ -33,9 +33,11 @@ class customer(db.Model):
 
 class case(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
-    Tz = db.Column("Tz", db.String(100), unique=True)
+    Tz = db.Column("Tz", db.String(100))
     caseName = db.Column("caseName", db.String(100), unique=True)
+    info = db.Column("info",  db.String(1000))
 
-    def __init__(self,Tz,CaseName):
+    def __init__(self,Tz,CaseName,info):
         self.Tz = Tz
         self.caseName = CaseName
+        self.info=info

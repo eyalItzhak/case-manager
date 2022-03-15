@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import fileManager
+import dataBaseManager
 from werkzeug.utils import secure_filename
 from models import db, users, customer, case
 import os
@@ -226,7 +227,7 @@ def createFile():
 
 
         if(fileManager.creatDir(path, caseName)):
-            case=case(customerTz,caseName)
+            case=case(customerTz,caseName,' ')
             db.session.add(case)
             db.session.commit()
 
@@ -237,9 +238,6 @@ def createFile():
         return redirect(url_for("case"))
 
 
-@app.route('/test')
-def test():
-    return render_template('new.html')
 
 
 @app.route("/deleteFile")
@@ -252,9 +250,27 @@ def fileInfo():
     return  # to do
 
 
-@app.route("/editFile")
+@app.route("/editFile", methods=['GET', 'POST'])
 def editFile():
+    from models import case  # cheak why
+    userFileChose=request.form["userChose"]
+    case = dataBaseManager.returnCaseInfo(case,userFileChose)
+    return render_template("caseInfo.html", caseName=case.caseName, info=case.info)
     return  # to do
+
+@app.route("/saveEditChanges", methods=['GET', 'POST'])
+def saveEditChanges():
+    from models import case  # cheak why
+    info=request.form["info"]
+    newNameCase=request.form["newNameCase"]
+    oldNameCase=request.form["oldNameCase"]
+    dataBaseManager.changeCaseInfo(db,case,oldNameCase,newNameCase,info)
+   # fileManager.changefolderName(oldNameCase,newNameCase,path) #need to fix
+    return redirect(url_for("home"))
+
+
+
+
 
 
 if __name__ == "__main__":

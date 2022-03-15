@@ -1,11 +1,18 @@
 import os
 from werkzeug.utils import secure_filename
+
 nameFileToIcon = {"docx": "bi bi-file-earmark-word", "rtf": "bi bi-file-earmark-word", "zip": "bi bi-file-earmark-zip",
-                  "dir": "bi bi-folder","empty" :"bi bi-x-square-fill","rar":"bi bi-file-earmark-zip"}  # pic to dispaly
+                  "dir": "bi bi-folder", "empty": "bi bi-x-square-fill",
+                  "rar": "bi bi-file-earmark-zip"}  # pic to dispaly
 
 
 # Get the list of all files and directories
 
+
+def changefolderName(oldName,newName,path):
+    if os.chdir(path) and os.rename("oldName", "newName"):
+        return True
+    return False
 
 def cheakIfdataBaseExsit(fileName, path):
     if (os.path.exists(fileName)):
@@ -21,10 +28,10 @@ def infoFromDirPath(path="C://Users//eyal//OneDrive//Desktop//sharon project//de
         return None
 
 
-def fileNameAndTypePic(listOfFiles):  # get list of file ["name.rtf", "name.zip"] and return [["name","bi bi-file-earmark-word"],[name," bi bi-file-earmark-zip"]]
+def fileNameAndTypePic(listOfFiles):  # get list of file ["name.rtf", "name.zip"] and return [["name-","bi bi-file-earmark-word"],[name," bi bi-file-earmark-zip"]]
     picList = []
-    if listOfFiles==[]:
-        val=["empty","empty"]
+    if listOfFiles == []:
+        val = ["empty", "empty"]
         val[1] = nameFileToIcon.get(val[1])
         picList.append(val)
         return picList
@@ -33,7 +40,7 @@ def fileNameAndTypePic(listOfFiles):  # get list of file ["name.rtf", "name.zip"
         val = elment.rsplit(".", 1)
         if (len(val) == 1):
             val.append("dir")
-        val[0] = val[0] + "." + val[1]
+        val[0] = val[0] #+ "." + val[1]
         val[1] = nameFileToIcon.get(val[1])
         picList.append(val)
     return picList
@@ -45,34 +52,39 @@ def convertSingleTypePicToFileName(name):  # get "name bi bi-file somting... " r
     return ''.join(tempName)
 
 
-def runFile(path="C://Users//eyal//OneDrive//Desktop//sharon project//demoMainFiles//id-500 hit and run",offsetPath=''):  # currect path is for testing  //run file
+def runFile(path="C://Users//eyal//OneDrive//Desktop//sharon project//demoMainFiles//id-500 hit and run",
+            offsetPath=''):  # currect path is for testing  //run file
     os.startfile(path + "//" + offsetPath)
     return
 
-def creatDir(path,name):
+
+def creatDir(path, name):
     try:
-     os.chdir(path)
-     os.mkdir(name)
-     return True
+        os.chdir(path)
+        os.mkdir(name)
+        return True
     except:
-     return False
+        return False
 
 
 def pythonPath(userPath):
-    return userPath.replace('/','\\')
+    if(userPath):
+        return userPath.replace('/', '\\')
+    else:
+        return
+
 
 def userPath(pythonPath):
-    return pythonPath.replace('\\','/')
+    return pythonPath.replace('\\', '/')
 
 
-def uploadFile(path,file):
+def uploadFile(path, file):
     try:
         filename = secure_filename(file.filename)
         file.save(os.path.join(path, filename))
         return True
     except:
         return False
-
 
 
 def chekIfDir(name):
@@ -82,6 +94,6 @@ def chekIfDir(name):
     else:
         return False
 
+
 def listOfCustomer(customer):
     return customer.query.all()
-
