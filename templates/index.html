@@ -19,16 +19,16 @@
     <div class="col" style="padding-right :0px; padding-left :0px;">
         <div class ="overflow-auto" style="height: 100vh; background-color: rgba(204,229,255,0.6);">
             <div class="d-flex justify-content-around flex-wrap">
-                {% for item_name, item_icon in dirInfo %}
+                {% for item_name, item_icon,item_name_origin in dirInfo %}
                  <div class="p-5" style="height=200px; width=200px;">
                      <div class="dropdown d-flex justify-content-end">
                          <button class="btn btn-light dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                              <form class="dropdown-item" action="/editFile" method="post"><button class="btn" name="userChose" value="{{item_name}}">info</button></form>
-                             <a class="dropdown-item" href="#">delete</a>
+                             <form class="dropdown-item" action="/deleteFile" method="post"><button class="btn" name="userChose" value="{{item_name_origin}}">delete</button></form>
                         </div>
                     </div>
-                     <form class="d-flex justify-content-center" action="#" method="post"> <button class="btn" name="userChose" value="{{item_name}}"><i class="{{item_icon}}  btn-xl"></i></button></form>
+                     <form class="d-flex justify-content-center" action="#" method="post"> <button class="btn" name="userChose" value="{{item_name_origin}}"><i class="{{item_icon}}  btn-xl"></i></button></form>
                      <p class="d-flex justify-content-center text-truncate">{{ item_name }} </p>
                  </div>
                 {% endfor %}

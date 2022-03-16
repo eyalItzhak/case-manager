@@ -1,4 +1,5 @@
 import os
+import shutil
 from werkzeug.utils import secure_filename
 
 nameFileToIcon = {"docx": "bi bi-file-earmark-word", "rtf": "bi bi-file-earmark-word", "zip": "bi bi-file-earmark-zip",
@@ -20,7 +21,7 @@ def cheakIfdataBaseExsit(fileName, path):
     return False
 
 
-def infoFromDirPath(path="C://Users//eyal//OneDrive//Desktop//sharon project//demoMainFiles//id-500 hit and run"):  # currect path is for testing  //retrun list of what inside the path
+def infoFromDirPath(path="C://Users"):  # currect path is for testing  //retrun list of what inside the path
     try:
         dir_list = os.listdir(path)
         return dir_list
@@ -30,19 +31,21 @@ def infoFromDirPath(path="C://Users//eyal//OneDrive//Desktop//sharon project//de
 
 def fileNameAndTypePic(listOfFiles):  # get list of file ["name.rtf", "name.zip"] and return [["name-","bi bi-file-earmark-word"],[name," bi bi-file-earmark-zip"]]
     picList = []
-    if listOfFiles == []:
-        val = ["empty", "empty"]
-        val[1] = nameFileToIcon.get(val[1])
-        picList.append(val)
+    if listOfFiles == [] or listOfFiles==None:
+        subList = ["empty", "empty","empty"]
+        subList[1] = nameFileToIcon.get(subList[1])
+        picList.append(subList)
         return picList
 
-    for elment in listOfFiles:
+    for idx,elment in enumerate(listOfFiles):
         val = elment.rsplit(".", 1)
+        subList=[]
         if (len(val) == 1):
             val.append("dir")
-        val[0] = val[0] #+ "." + val[1]
-        val[1] = nameFileToIcon.get(val[1])
-        picList.append(val)
+        subList.append(val[0])
+        subList.append(nameFileToIcon.get(val[1]))
+        subList.append(listOfFiles[idx])
+        picList.append(subList)
     return picList
 
 
@@ -52,11 +55,21 @@ def convertSingleTypePicToFileName(name):  # get "name bi bi-file somting... " r
     return ''.join(tempName)
 
 
-def runFile(path="C://Users//eyal//OneDrive//Desktop//sharon project//demoMainFiles//id-500 hit and run",
-            offsetPath=''):  # currect path is for testing  //run file
+def runFile(path="C://Users", offsetPath= ''):  # currect path is for testing  //run file
     os.startfile(path + "//" + offsetPath)
     return
 
+def deleteFile(path,name):
+    try:
+        os.chdir(path)
+        os.remove(name)
+        return True
+    except:
+        try:
+            path = os.path.join(path,name)
+            shutil.rmtree(path)
+        except:
+            return False
 
 def creatDir(path, name):
     try:

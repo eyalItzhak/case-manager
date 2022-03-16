@@ -1,8 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
 import fileManager
 import dataBaseManager
-from werkzeug.utils import secure_filename
 from models import db, users, customer, case
 import os
 
@@ -13,19 +11,12 @@ path = os.path.join(user_home_path, "OneDrive", "Desktop", "sharon project", "de
 # ************************************
 app = Flask(__name__)  # start the flask file
 app.secret_key = "hello"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# ************************************
 # ************************************
 
-# Init the db from an external file
-db.app = app
-db.init_app(app)
-
+dataBaseManager.init_DB(app)
 
 @app.route('/', methods=["POST", "GET"])
 def home():
-    #  path=basePath
     if "user" in session:
         global path
         global basePath
@@ -81,14 +72,11 @@ def register():
         user = request.form["userName"]
         password = request.form["password"]
         email = request.form["email"]
-        found_user = users.query.filter_by(name=user).first()
-        if found_user:
+
+        if dataBaseManager.addNewUser(user,password,email):
             flash("user already exist")
             return render_template("register.html")
         else:
-            usr = users(user, password, email, "")
-            db.session.add(usr)
-            db.session.commit()
             session.permanent = True
             session["user"] = user
             session["email"] = email
@@ -105,14 +93,10 @@ def AddCustomer():
     tz = request.form["cId"]
     email = request.form["cEmail"]
     password = request.form["cPhone"]
-    found_user = customer.query.filter_by(tz=tz).first()
-    if found_user:
+    if not dataBaseManager.addCustomer(firstName,lastName,tz,email,password):
         flash("user already exist")
         return redirect(url_for("home"))
     else:
-        cust = customer(firstName, lastName, email, password, tz)
-        db.session.add(cust)
-        db.session.commit()
         return redirect(url_for("home"))
 
 
@@ -122,7 +106,7 @@ def login():
         session.permanent = True
         user = request.form["userName"]
         password = request.form["password"]
-        found_user = users.query.filter_by(name=user, password=password).first()
+        found_user = dataBaseManager.verificationUser(user,password) #retrun the user if found
         if found_user:
             session["user"] = user
             session["password"] = password
@@ -160,13 +144,7 @@ def user():
             user = request.form["user"]
             session["user"] = user
 
-            found_user = users.query.filter_by(name=user).first()
-            found_user.email = email
-            found_user.workSpace = workSpace
-            found_user.user = user
-            found_user.password = password
-
-            db.session.commit()
+            dataBaseManager.updateUserInfo(email,workSpace,password,user)
             flash("data saved!")
         else:
             email = session["email"]
@@ -216,21 +194,13 @@ def uploadFile():
 @app.route('/createFile', methods=['GET', 'POST'])  # add cases
 def createFile():
     from models import case #cheak why
-    global path
+    global path # why?
     global basePath
     if basePath == path:
-        # CustomerFirstName = request.form["fname"]
-        # CustomerLastName = request.form["lname"]
-
         caseName = request.form["cname"]
         customerTz = request.form["custTz"]
-
-
         if(fileManager.creatDir(path, caseName)):
-            case=case(customerTz,caseName,' ')
-            db.session.add(case)
-            db.session.commit()
-
+            dataBaseManager.creatCase(customerTz,caseName,'')
         return redirect(url_for("home"))
     else:
         caseName = request.form["cname"]
@@ -240,31 +210,30 @@ def createFile():
 
 
 
-@app.route("/deleteFile")
+@app.route("/deleteFile",methods=['GET', 'POST'])
 def delete():
-    return  # to do
+    delete_name = request.form["userChose"]
+    if path == basePath:
+        dataBaseManager.removeCase(delete_name)
 
+    fileManager.deleteFile(path,delete_name)
+    return redirect(url_for("home"))
 
-@app.route("/showInfo")
-def fileInfo():
-    return  # to do
 
 
 @app.route("/editFile", methods=['GET', 'POST'])
 def editFile():
-    from models import case  # cheak why
     userFileChose=request.form["userChose"]
-    case = dataBaseManager.returnCaseInfo(case,userFileChose)
+    case = dataBaseManager.returnCaseInfo(userFileChose)
     return render_template("caseInfo.html", caseName=case.caseName, info=case.info)
-    return  # to do
+
 
 @app.route("/saveEditChanges", methods=['GET', 'POST'])
 def saveEditChanges():
-    from models import case  # cheak why
     info=request.form["info"]
     newNameCase=request.form["newNameCase"]
     oldNameCase=request.form["oldNameCase"]
-    dataBaseManager.changeCaseInfo(db,case,oldNameCase,newNameCase,info)
+    dataBaseManager.changeCaseInfo(oldNameCase,newNameCase,info)
    # fileManager.changefolderName(oldNameCase,newNameCase,path) #need to fix
     return redirect(url_for("home"))
 
