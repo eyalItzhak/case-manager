@@ -11,9 +11,10 @@ nameFileToIcon = {"docx": "bi bi-file-earmark-word", "rtf": "bi bi-file-earmark-
 
 
 def changefolderName(oldName,newName,path):
-    if os.chdir(path) and os.rename("oldName", "newName"):
+     os.chdir(path)
+     if(os.rename(oldName, newName)):
         return True
-    return False
+     return False
 
 def cheakIfdataBaseExsit(fileName, path):
     if (os.path.exists(fileName)):
@@ -101,12 +102,17 @@ def uploadFile(path, file):
 
 
 def chekIfDir(name):
-    val = name.rsplit(".", 1)
-    if val[1] == "dir":
-        return True
-    else:
-        return False
+   try:
+        val = name.rsplit(".", 1)
+        if val[1] == "dir":
+            return True
+        else:
+            return False
+   except:
+       return True
+
 
 
 def listOfCustomer(customer):
     return customer.query.all()
+

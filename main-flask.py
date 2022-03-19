@@ -8,6 +8,8 @@ user_home_path = os.path.expanduser("~/")
 basePath = os.path.join(user_home_path, "OneDrive", "Desktop", "sharon project", "demoMainFiles")
 path = os.path.join(user_home_path, "OneDrive", "Desktop", "sharon project", "demoMainFiles")
 
+
+
 # ************************************
 app = Flask(__name__)  # start the flask file
 app.secret_key = "hello"
@@ -225,16 +227,18 @@ def delete():
 def editFile():
     userFileChose=request.form["userChose"]
     case = dataBaseManager.returnCaseInfo(userFileChose)
-    return render_template("caseInfo.html", caseName=case.caseName, info=case.info)
+    owner = dataBaseManager.getCustomerByTz(case.Tz)
+    return render_template("caseInfo.html", caseName=case.caseName, info=case.info, ownerFirstName=owner.fName, ownerLastName=owner.lName)
 
 
 @app.route("/saveEditChanges", methods=['GET', 'POST'])
 def saveEditChanges():
+    global path  # why?
     info=request.form["info"]
     newNameCase=request.form["newNameCase"]
     oldNameCase=request.form["oldNameCase"]
     dataBaseManager.changeCaseInfo(oldNameCase,newNameCase,info)
-   # fileManager.changefolderName(oldNameCase,newNameCase,path) #need to fix
+    fileManager.changefolderName(oldNameCase,newNameCase,path) #need to fix
     return redirect(url_for("home"))
 
 

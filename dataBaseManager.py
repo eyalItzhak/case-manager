@@ -75,5 +75,14 @@ def creatCase(customerTz,caseName,info):
     except:
         return False
 
+def getCustomerByTz(tz):
+        found_user = customer.query.filter_by(tz=tz).first()
+        if found_user:
+            return found_user
+        else:
+            return False
+
+
+
 
 
